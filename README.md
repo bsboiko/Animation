@@ -1,4 +1,6 @@
-#Animation
+# Animation
+
+This software will create an animation that follows keyframes set on bezier splines.
 
 ## Bezier:
 

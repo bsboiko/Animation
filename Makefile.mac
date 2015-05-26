@@ -1,0 +1,38 @@
+#!smake
+#  @@ Makefile for CMSC 435/634 - Project 4: Animation
+#  @@ Jian Chen (jichen@umbc.edu)
+#
+
+MACHINE= $(shell uname -s)
+
+ifeq ($(MACHINE),Darwin)
+	OPENGL_INC= -FOpenGL
+	OPENGL_LIB= -framework OpenGL -framework GLUT -framework Cocoa
+else
+	OPENGL_INC= -I/usr/X11R6/include
+	OPENGL_LIB= -I/usr/lib64 -lGL -lGLU
+	LLDLIBS = $(GLUT) -lGLU -lGL -lXmu -lXext -lX11 -lm
+endif
+
+CXX=g++
+COMPILER_FLAGS= -g
+
+INCLUDE= $(OPENGL_INC)
+LIBS= $(OPENGL_LIB)
+
+TARGETS = Bezier
+
+SRCS = Bezier.c
+
+default : $(TARGETS)
+
+OBJS = $(SRCS:.c=.o)
+
+%.o: %.c
+	$(CXX) -c $(COMPILER_FLAGS) -o $@ $< $(INCLUDE)
+
+Bezier: Bezier.o
+	$(CXX) $(COMPILER_FLAGS) $(LIBS) Bezier.o -o Bezier
+
+clean:
+	rm -f $(OBJS) $(TARGETS) *~
